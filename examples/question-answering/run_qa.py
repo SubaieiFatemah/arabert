@@ -17,7 +17,7 @@
 Fine-tuning the library models for question answering.
 """
 # You can also adapt this script on your own question answering task. Pointers for this are left as comments.
-
+import evaluate
 import logging
 import os
 import sys
@@ -486,7 +486,7 @@ def main():
         references = [{"id": ex["id"], "answers": ex[answer_column_name]} for ex in datasets["validation"]]
         return EvalPrediction(predictions=formatted_predictions, label_ids=references)
 
-    metric = load_metric("squad_v2" if data_args.version_2_with_negative else "squad")
+    metric = evaluate.load("squad_v2" if data_args.version_2_with_negative else "squad")
 
     def compute_metrics(p: EvalPrediction):
         return metric.compute(predictions=p.predictions, references=p.label_ids)
